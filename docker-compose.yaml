@@ -1,0 +1,53 @@
+version: '3.7'
+
+networks:
+  skilllane.dev:
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: frontend.skilllane
+    command: npm run start:dev
+    volumes:
+      - ./frontend:/usr/src/app 
+      - /usr/src/app/node_modules # not mount node_modules inside docker
+    depends_on:
+      - backend
+    networks:
+      - skilllane.dev
+  backend:
+    build: ./backend
+    container_name: backend.skilllane
+    command: npm run start:dev
+    environment:
+      NODE_ENV: 'local'
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules # not mount node_modules inside docker
+    depends_on:
+      - db
+      - nginx
+    networks:
+      - skilllane.dev
+  db:
+    image: postgres:13-alpine
+    container_name: db.skilllane
+    environment:
+      POSTGRES_DB: skilllane
+      POSTGRES_USER: skilllane
+      POSTGRES_PASSWORD: skilllane
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - skilllane.dev
+  nginx:
+    build: ./nginx
+    container_name: nginx.skilllane
+    ports: 
+      - '4000:4000'
+    networks:
+      - skilllane.dev
