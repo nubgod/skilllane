@@ -5,7 +5,7 @@ import helmet from 'koa-helmet'
 import rootRouter from './routes'
 // import jwtParser from './common/helper/jwt-parser'
 // import logger from './common/helper/logging'
-// import db from './common/connection'
+import db from './common/connection'
 
 const app = new Koa()
 
@@ -18,6 +18,6 @@ app.use(bodyParser({
 // app.use(logger())
 app.use(rootRouter.routes())
 
-// app.context.db = db
+app.context.db = db
 
 export default app

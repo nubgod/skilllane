@@ -20,7 +20,7 @@ services:
   backend:
     build: ./backend
     container_name: backend.skilllane
-    command: npm run start:dev
+    command: sh -c "npm run command migrate && npm run start:dev" 
     environment:
       NODE_ENV: 'local'
     volumes:
@@ -37,7 +37,7 @@ services:
     environment:
       POSTGRES_DB: skilllane
       POSTGRES_USER: skilllane
-      POSTGRES_PASSWORD: skilllane
+      POSTGRES_PASSWORD: password
     volumes:
       - ./data/db:/var/lib/postgresql/data
     ports:
