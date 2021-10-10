@@ -1,0 +1,17 @@
+FROM node:15-alpine
+
+# RUN apk upgrade --update && apk add --update curl
+# RUN apk add --no-cache nodejs npm
+# RUN curl -v https://registry.npmjs.com/
+# Create app directory
+WORKDIR /usr/src/app
+# RUN npm config set registry http://registry.npmjs.org/
+
+# Install app dependencies
+COPY package.json package.json
+RUN yarn 
+
+COPY . .
+RUN yarn build
+
+EXPOSE 80
