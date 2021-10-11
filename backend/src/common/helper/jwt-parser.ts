@@ -21,6 +21,7 @@ const jwtParser = () => async (
   next: any,
 ): Promise<void> => {
   const authorization: string = ctx.request.headers.authorization
+  console.log(authorization , 'authorization')
   if (!authorization) {
     ctx.state.isUserLogin = false
     return next()

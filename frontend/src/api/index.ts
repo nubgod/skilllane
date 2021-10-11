@@ -57,9 +57,9 @@ const webAPI = () => {
         `/api/courses`
       , body)
     },
-    editProfile: async (body: ICourse) => {
-      return server.post(
-        `/api/courses`
+    editProfile: async (body: any) => {
+      return server.patch(
+        `/api/user/profile`
       , body)
     },
     getProfile: async () => {

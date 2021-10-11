@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import initState from "../utils/init-state";
 import api from "../api";
-
+import localState from "../utils/local-state";
+import { useHistory } from "react-router-dom";
 const { SubMenu } = Menu;
 
 const HeaderBox = styled.div`
@@ -26,28 +27,36 @@ interface IProps {
     editProfile?: boolean
 }
 
-const handleOnClickProfile = () => {
-    window.location.href = '/profile'
-}
 
-const logout = async () => {
-    try {
-        await api.logout()
-        window.location.href = '/'
-    } catch (error) { console.log(error) }
-}
 
 const Header = ({ editProfile }: IProps) => {
+    let history = useHistory();
     const [current, setCurrent] = useState<string>('');
     const handleClick = (e: any) => {
         setCurrent(e.key)
+    }
+
+    const handleOnClickProfile = () => {
+        history.push("/profile");
+    }
+    
+    const logout = async () => {
+        try {
+            await api.logout()
+            localState.clean();
+            window.location.href = '/'
+        } catch (error) { console.log(error) }
+    }
+
+    const gotoHomePage = () => {
+        window.location.href = '/'
     }
 
     return (
         <HeaderBox>
             {editProfile ?
                 <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }} >
-                    <Logo src="https://account.skilllane.com/asset/skilllane-account-logo.png" />
+                    <Logo onClick={gotoHomePage} src="https://account.skilllane.com/asset/skilllane-account-logo.png" />
                     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" >
                         <SubMenu key="SubMenu" icon={<UserOutlined />}>
                                 <Menu.Item onClick={handleOnClickProfile} key="setting:1">Edit Profile</Menu.Item>

@@ -1,11 +1,13 @@
 import { Button, DatePicker, Form, Input, Radio } from "antd"
 import { useEffect, useState } from "react"
+import { Router } from "react-router"
 import API from "../api"
 import Header from "../components/Header"
 import { IUser } from "../interfaces/user.interface"
 import initState from "../utils/init-state"
-
+import { useHistory } from "react-router-dom";
 const Profile = () => {
+    let history = useHistory();
     const [form] = Form.useForm()
 
     useEffect(() => {
@@ -27,9 +29,9 @@ const Profile = () => {
 
     const onFinish = async (values: any) => {
         try {
-            const res = await API.getCourses()
+            const res = await API.editProfile(values)
             if (res.status === 200) {
-                console.log('ress ',res)
+                history.push("/");
             }
         } catch (error) { console.log(error) }
     }

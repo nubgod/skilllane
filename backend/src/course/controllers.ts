@@ -8,9 +8,8 @@ import { Course } from './models'
 
 export class Controller {
 
-  // @isLogin()
+  @isLogin()
   public async getCourses(ctx: Koa.Context) {
-    console.log(await Course.findAll({ include: ['user']}) , "COURSEEE")
     const { startDate, endDate, search }: any = ctx.request.query
     let query:any = {
       include: ['user'],
@@ -66,7 +65,7 @@ export class Controller {
     ctx.body = courses
   }
 
-  // @isLogin()
+  @isLogin()
   public async createCourse(ctx: Koa.Context) {
     const { name, description, subject, category, image, startDate, endDate }: any = ctx.request.body
     const course: Course = Course.build()

@@ -3,7 +3,7 @@ import cors from '@koa/cors'
 import bodyParser from 'koa-bodyparser'
 import helmet from 'koa-helmet'
 import rootRouter from './routes'
-// import jwtParser from './common/helper/jwt-parser'
+import jwtParser from './common/helper/jwt-parser'
 // import logger from './common/helper/logging'
 import db from './common/connection'
 
@@ -14,7 +14,7 @@ app.use(cors())
 app.use(bodyParser({
   enableTypes: ['json', 'form', 'text'],
 }))
-// app.use(jwtParser())
+app.use(jwtParser())
 // app.use(logger())
 app.use(rootRouter.routes())
 

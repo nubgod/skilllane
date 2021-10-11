@@ -1,9 +1,10 @@
 import Koa from 'koa'
 
-export const isLogin = (role='student') => (target: any, name: any, descriptor: any) => {
+export const isLogin = () => (target: any, name: any, descriptor: any) => {
   const original = descriptor.value
 
   descriptor.value = async (ctx: Koa.Context, next: any) => {
+    console.log(ctx.state, "STATE")
     ctx.assert(ctx.state.isUserLogin, 401)
     return original.call(this, ctx, next)
   }
