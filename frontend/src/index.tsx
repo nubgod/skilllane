@@ -11,9 +11,7 @@ const root = () => document.getElementById('root')
 
 const loadState = async () => {
   const state = await initState()
-  console.log(localStorage.getItem('auth'), "loggg")
-  console.log(state, "STATE")
-  if (localStorage.getItem('auth')) {
+  if (state) {
     ReactDOM.render(<App authed={true}  />, root())
     return true
   }

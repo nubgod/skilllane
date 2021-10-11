@@ -1,6 +1,7 @@
 import { CustomModel, DataTypes } from '../common/helper/sequelize'
 import sequelize from '../common/connection'
 import { Auth } from '../common/models'
+import { User } from '../user/models'
 // import { Party, JoinParty } from '../party/models'
 
 class Course extends CustomModel {
@@ -69,8 +70,8 @@ Course.init(
             field: 'created_by',
             allowNull: false,
             references: {
-                model: 'common_auth',
-                key: 'username',
+                model: 'user',
+                key: 'auth',
             },
         },
         createdAt: {
@@ -87,6 +88,6 @@ Course.init(
     }
 )
 
-Course.belongsTo(Auth, { foreignKey: 'created_by' })
+Course.belongsTo(User, { foreignKey: 'created_by', as: 'user' })
 
 export { Course }

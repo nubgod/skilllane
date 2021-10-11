@@ -31,4 +31,24 @@ export class Controller {
     await user.save()
     ctx.body = await auth.getAccessToken(authToken.token)
   }
+
+
+  public async editProfile(ctx: Koa.Context) {
+    const { firstName, lastName, nickName, birthDay, gender }: any = ctx.request.body
+    const user: User = await User.findByPk(ctx.state.username ?? 'nubtest')
+    // const update: User = await User.update(user,{
+    //   firstName,
+    //   lastName,
+    //   nickName,
+    //   birthDay,
+    //   gender,
+    // })
+    // await update.save()
+  }
+
+  public async profile(ctx: Koa.Context) {
+    const user: User = await User.findByPk(ctx.state.username ?? 'nubtest')
+    await user.save()
+    ctx.body = user.get()
+  }
 }

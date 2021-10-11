@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Menu } from 'antd';
 import styled from "styled-components";
+import { MailOutlined, AppstoreOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import initState from "../utils/init-state";
+
+const { SubMenu } = Menu;
 
 const HeaderBox = styled.div`
     display: flex;
@@ -16,10 +21,35 @@ const Logo = styled.img`
     vertical-align: middle;
 `
 
-const Header = () => {
+interface IProps {
+    editProfile?: boolean
+}
+
+const handleOnClickProfile = () => {
+    window.location.href = '/profile'
+}
+
+const Header = ({ editProfile }: IProps) => {
+    const [current, setCurrent] = useState<string>('');
+    const handleClick = (e: any) => {
+        setCurrent(e.key)
+    }
+
     return (
         <HeaderBox>
-            <Logo src="https://account.skilllane.com/asset/skilllane-account-logo.png" />
+            {editProfile ?
+                <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }} >
+                    <Logo src="https://account.skilllane.com/asset/skilllane-account-logo.png" />
+                    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" >
+                        <SubMenu key="SubMenu" icon={<UserOutlined />}>
+                                <Menu.Item onClick={handleOnClickProfile} key="setting:1">Edit Profile</Menu.Item>
+                                <Menu.Item onClick={handleOnClickProfile} key="setting:2">Logout</Menu.Item>
+                        </SubMenu>
+                    </Menu>
+                </div>
+                :
+                <Logo src="https://account.skilllane.com/asset/skilllane-account-logo.png" />}
+
         </HeaderBox>
     )
 };

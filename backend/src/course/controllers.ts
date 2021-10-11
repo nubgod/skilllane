@@ -3,16 +3,17 @@ import { Op } from 'sequelize'
 import { isLogin } from '../common/helper/koa-decorators'
 // import { User } from './models'
 import { Auth } from '../common/models'
+import { User } from '../user/models'
 import { Course } from './models'
 
 export class Controller {
 
   // @isLogin()
   public async getCourses(ctx: Koa.Context) {
-
+    console.log(await Course.findAll({ include: ['user']}) , "COURSEEE")
     const { startDate, endDate, search }: any = ctx.request.query
-    // console.log('test ',test)
-    let query = {
+    let query:any = {
+      include: ['user'],
       where: {},
     }
     if (search) {

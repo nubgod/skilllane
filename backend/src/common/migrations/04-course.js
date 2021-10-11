@@ -44,8 +44,8 @@ module.exports = {
                     field: 'created_by',
                     allowNull: false,
                     references: {
-                        model: 'common_auth',
-                        key: 'username',
+                        model: 'user',
+                        key: 'auth',
                     },
                 },
                 createdAt: {

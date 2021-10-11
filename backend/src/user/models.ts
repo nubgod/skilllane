@@ -10,6 +10,7 @@ class User extends CustomModel {
   public nickName: string
   public birthDay: Date
   public gender: string
+  public role: string
 
   public readonly createdAt!: Date
 }
@@ -65,7 +66,6 @@ User.init(
 )
 
 User.belongsTo(Auth, { foreignKey: 'auth' })
-// User.belongsToMany(Party, { foreignKey: 'customer', through: JoinParty })
-// Party.belongsToMany(User, { foreignKey: 'partyId', through: JoinParty })
+
 
 export { User }

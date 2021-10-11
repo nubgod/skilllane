@@ -9,7 +9,6 @@ const renderRoutes = (
   extraProps = {},
   switchProps = {}
 ) => {
-  console.log('routes ',routes,authPath)
 
   return routes ? (
     <Switch {...switchProps}>
@@ -20,15 +19,12 @@ const renderRoutes = (
           exact={route.exact}
           strict={route.strict}
           render={(props:any) => {
-            console.log(route, "ROUTEE")
             if (!route.restricted || authed || route.path === authPath) {
-              console.log("TESTNAAJAA")
               return (
                 <route.component {...props} {...extraProps} route={route} />
               );
             }
             const redirPath = authPath ? authPath : "/login";
-            console.log(redirPath , 'redirPath')
             return (
               <Redirect
                 to={{

@@ -36,15 +36,6 @@ const Container = ({ children }: any) => {
 
 function App(props: any) {
   return (
-      // <Router>
-      //   <div>
-      //     <Switch>
-      //       <Route component={Login} path="/login" />
-      //       <Route component={Register} path="/register" />
-      //       <Route component={Courses} path="/courses" />
-      //     </Switch>
-      //   </div>
-      // </Router>
     <BrowserRouter>
       <Container>{renderRoutes(routes, props.authed, '/')}</Container>
     </BrowserRouter>
@@ -52,12 +43,10 @@ function App(props: any) {
 }
 
 const LoginApp = () => {
-  console.log("TEST")
   return (
     <BrowserRouter>
     <Container>
       {renderRoutes(routesAuth, false, '/login')}
-      {/* <Login /> */}
     </Container>
   </BrowserRouter>
   )

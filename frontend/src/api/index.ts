@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ICourse } from '../interfaces/course.interface'
 import localState from '../utils/local-state'
 
 const bearerFormat = (accessToken: string) => `Bearer ${accessToken}`
@@ -40,33 +41,29 @@ const webAPI = () => {
     login: async (username: string, password: string) => {
       return server.post('/api/user/sign-in', { username, password })
     },
-    register: async (username: string, password: string) => {
-      return server.post('/api/customer/sign-up', { username, password })
+    register: async (body: any) => {
+      return server.post('/api/user/sign-up', body)
     },
     logout: async () => {
       return server.delete('/api/common/logout', {
         headers: { refreshtoken: localState.load().refreshToken },
       })
     },
-    getCourses: async (search?: string) => {
-      return server.get(`/api/courses?search=${search}`)
+    getCourses: async (search?: string, startDate?: any, endDate?: any) => {
+      return server.get(`/api/courses?search=${search}&startDate=${startDate}&endDate=${endDate}`)
     },
-    getMyParties: async (customer: string, page: number, pageSize: number) => {
-      return server.get(
-        `/api/parties/party/${customer}?page=${page}&pageSize=${pageSize}`
-      )
+    createCourse: async (body: ICourse) => {
+      return server.post(
+        `/api/courses`
+      , body)
     },
-    createParty: async (name: string, amount: number) => {
-      return server.post('/api/parties/party', { name, amount })
+    editProfile: async (body: ICourse) => {
+      return server.post(
+        `/api/courses`
+      , body)
     },
-    joinParty: async (partyId: number) => {
-      return server.post('/api/parties/join-party', { partyId })
-    },
-    cancelJoinedParty: async (partyId: number) => {
-      return server.delete(`/api/parties/cancel-party/${partyId}`)
-    },
-    deleteParty: async (partyId: number) => {
-      return server.delete(`/api/parties/party/${partyId}`)
+    getProfile: async () => {
+      return server.get(`/api/user/profile`)
     },
   }
 }

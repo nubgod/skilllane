@@ -20,18 +20,6 @@ const routesConfig: RouteConfig[] = [
     restricted: false,
     component: Register,
   },
-  // {
-  //   path: '/create-party',
-  //   exact: true,
-  //   restricted: true,
-  //   component: CreateParty,
-  // },
-  // {
-  //   path: '/my-parties',
-  //   exact: true,
-  //   restricted: true,
-  //   component: MyParties,
-  // },
 ]
 
 export default routesConfig
