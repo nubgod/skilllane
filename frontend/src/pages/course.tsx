@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components"
-import { Form, Input, Button, Checkbox, Row, Col, Select, DatePicker,Spin, Modal } from 'antd';
+import { Form, Input, Button, Row, Col, DatePicker, Modal } from 'antd';
 import API from "../api";
 import { ICourse } from "../interfaces/course.interface";
 import { useDebounce } from "../utils/debounce";
 import Header from "../components/Header";
 import initState from "../utils/init-state";
+import { Container } from "../components/Layout";
+import styled from "styled-components";
 
 interface ICardProps {
     data?: ICourse
@@ -15,7 +16,7 @@ const Courses = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [search, setSearch] = useState<string>('')
     const [courses, setCourses] = useState<ICourse[]>([])
-    
+
     const [isSearching, setIsSearching] = useState(false);
     const debouncedSearchTerm = useDebounce(search, 1000);
     const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -24,7 +25,6 @@ const Courses = () => {
         endDate: ''
     })
     const [role, setRole] = useState<string>()
-    const [username, setUsername] = useState<string>()
 
     const [form] = Form.useForm()
 
@@ -36,8 +36,8 @@ const Courses = () => {
 
     useEffect(() => {
         const loadState = async () => {
-            const { role }:any = await initState()
-            if(role){
+            const { role }: any = await initState()
+            if (role) {
                 setRole(role)
             }
         }
@@ -67,7 +67,7 @@ const Courses = () => {
         setSearch(e.target.value)
     }
 
-    const handleOnCreateCourse = async (values: any) =>{
+    const handleOnCreateCourse = async (values: any) => {
         try {
             setIsLoading(true)
             const res = await API.createCourse({
@@ -78,19 +78,19 @@ const Courses = () => {
             if (res.status === 201) {
                 form.resetFields()
                 fetchCourse()
-            } 
+            }
             setIsLoading(false)
             setIsVisible(false)
 
-        } catch (error) { 
+        } catch (error) {
             console.log(error)
-            setIsLoading(false) 
+            setIsLoading(false)
             setIsVisible(false)
         }
     }
 
     const handleOnChangeDate = (date: any) => {
-        if(date){
+        if (date) {
             setDate({
                 startDate: date[0],
                 endDate: date[1]
@@ -103,21 +103,30 @@ const Courses = () => {
         }
     }
 
+    const TextContainer = styled.div<any>`
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: ${props => props.color ? props.color : 'black'};
+        ${props => props.bold && 'font-weight: bold;'}
+    `;
+
     const Card = ({ data }: ICardProps) => {
         return (
-            <Row style={{ minHeight: '200px', border: '1px solid #E5E5E5', padding: '20px',marginBottom:10 }} gutter={16}>
-                <Col xs={8} lg={24}>
-                    <img style={{ width: '100%', height: '100px', marginBottom: '20px' }} src="https://resource.skilllane.com/courses/highlight_imgs/000/001/659/large/660x390_%282%29_1628136074.jpg" />
+            <Row style={{ minHeight: '200px', border: '1px solid #E5E5E5', padding: '20px', marginBottom: 10, height: '100%', wordWrap: 'break-word' }} gutter={16}>
+                <Col xs={24} lg={24}>
+                    <img style={{ width: '100%', marginBottom: '20px' }} src="https://resource.skilllane.com/courses/highlight_imgs/000/001/659/large/660x390_%282%29_1628136074.jpg" />
                 </Col>
                 <Col xs={16} lg={24}>
-                    <div style={{ fontWeight: 'bold', color: '#00532a' }}>
+                    <TextContainer bold color="#00532a">
                         {data?.name}
-                    </div>
-                    <div style={{ marginTop: '10px' }}>
+                    </TextContainer>
+                    <TextContainer style={{ marginTop: '10px' }}>
                         {data?.description}
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    </TextContainer>
+                    <div style={{ marginTop: 10 }}>
                         <span style={{ color: '#00532a' }}>ผู้สอน</span>
                         <span style={{ marginLeft: '5px' }}>{`${data?.user?.firstName} ${data?.user?.lastName}`}</span>
                     </div>
@@ -126,57 +135,58 @@ const Courses = () => {
         )
     }
 
-    return <div >
-        <Header editProfile={true}/>
-        <div style={{ flexFlow: 'row', justifyContent: 'center', justifyItems: 'center', width: '100vw', height: '100vh', padding: '20px' }}>
-        <Row gutter={[16,16]}>
-            <Col sm={24} md={8} style={{width: '100%'}}>
-                <DatePicker.RangePicker style={{ width: '100%' }} onChange={handleOnChangeDate} />
-            </Col>
-            <Col sm={24} md={16} style={{width: '100%'}}>
-                <Input.Search onChange={handleOnSearch} />
-            </Col>
-            {role !== 'student' &&
-                <Col sm={24} md={24}>
-                    <Button type="primary" onClick={()=>setIsVisible(true)}>Create Course</Button>
-                </Col>
-            }
-        </Row>
+    return (
+        <Container>
+            <Header editProfile={true} />
+            <div style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', justifyItems: 'center', width: '100vw', padding: '20px' }}>
+                <Row gutter={[16, 16]}>
+                    <Col sm={24} md={8} style={{ width: '100%' }}>
+                        <DatePicker.RangePicker style={{ width: '100%' }} onChange={handleOnChangeDate} />
+                    </Col>
+                    <Col sm={24} md={16} style={{ width: '100%' }}>
+                        <Input.Search onChange={handleOnSearch} />
+                    </Col>
+                    {role !== 'student' &&
+                        <Col md={24} xs={24} style={{ justifyContent: 'end', display: 'flex' }}>
+                            <Button type="primary" onClick={() => setIsVisible(true)}>Create Course</Button>
+                        </Col>
+                    }
+                </Row>
 
-        {/* {isSearching && <div>Searching ...</div>} */}
+                <Row gutter={24} style={{ marginTop: '20px', width: '100%', marginLeft: '0', marginRight: '0' }}>
+                    {courses.map((data, index) => (
+                        <Col sm={24} md={8} lg={6} style={{ width: '100%', marginBottom: 10 }} key={index}>
+                            <Card data={data} />
+                        </Col>
+                    ))}
+                </Row>
+            </div>
 
-        <Row gutter={24} justify="center" style={{ marginTop: '20px', width: '100%', marginLeft: '0',marginRight: '0' }}>
-            {courses.map((data, index) => (
-                <Col sm={24} lg={4} style={{ width: '100%' }} key={index}>
-                    <Card data={data} />
-                </Col>
-            ))}
-        </Row>
-        </div>
-
-        <Modal destroyOnClose visible={isVisible} footer={false} onCancel={() => {setIsVisible(false); form.resetFields()}} centered>
-            <Form form={form} onFinish={handleOnCreateCourse}>
-                <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
-                    <Input/>
-                </Form.Item>
-                <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please input category!' }]}>
-                    <Input/>
-                </Form.Item>
-                <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
-                    <Input/>
-                </Form.Item>
-                <Form.Item label="Description" name="description" rules={[{ required: true, message: 'Please input description!' }]}>
-                    <Input.TextArea/>
-                </Form.Item>
-                <Form.Item label="Date" name="date" rules={[{ required: true, message: 'Please input date!' }]}>
-                    <DatePicker.RangePicker style={{width: '100%'}}/>
-                </Form.Item>
-                <Form.Item>
-                    <Button style={{width: '100%'}} type="primary" htmlType="submit" loading={isLoading}>create</Button>
-                </Form.Item>
-            </Form>
-        </Modal>
-    </div>
+            <Modal destroyOnClose visible={isVisible} footer={false} onCancel={() => { setIsVisible(false); form.resetFields() }} centered>
+                <h3>Create Course</h3>
+                <Form layout="vertical" style={{ paddingTop: 20 }} form={form} onFinish={handleOnCreateCourse}>
+                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Category" name="category" rules={[{ required: true, message: 'Please input category!' }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Description" name="description" rules={[{ required: true, message: 'Please input description!' }]}>
+                        <Input.TextArea />
+                    </Form.Item>
+                    <Form.Item label="Date" name="date" rules={[{ required: true, message: 'Please input date!' }]}>
+                        <DatePicker.RangePicker style={{ width: '100%' }} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button style={{ width: '100%' }} type="primary" htmlType="submit" loading={isLoading}>Create</Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </Container>
+    )
 };
 
 export default Courses;

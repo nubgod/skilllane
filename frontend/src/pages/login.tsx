@@ -6,31 +6,8 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import API from "../api";
 import localState from "../utils/local-state"
+import { Container } from "../components/Layout";
 
-
-const Container = styled.div`
-    width: 100%;
-    height: 100%;
-    background-color: red;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-`;
-
-const ContainerBox = styled.div`
-width: 100vw;
-height: 100vh;
-`;
-
-const LoginCard = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    height: 500px;
-    background-color: pink;
-`
 const Title = styled.h1`
     font-size: 36px;
     color: #00532A;
@@ -51,8 +28,8 @@ const Login = () => {
     const onFinish = async (values: any) => {
         try {
             setIsLoading(true)
-            const res = await API.login(values.username,values.password)
-            if(res.status === 200){
+            const res = await API.login(values.username, values.password)
+            if (res.status === 200) {
                 setIsLoading(false)
                 localState.save(res.data)
                 window.location.href = '/'
@@ -66,59 +43,64 @@ const Login = () => {
         }
     };
 
-    return <div style={{ flexFlow: 'row', justifyContent: 'center', justifyItems: 'center', width: '100vw', height: '100vh' }}>
-        <Header />
-        <div style={{
-            width: '300px',
-            margin: '0 auto',
-            marginTop: '5rem',
-            display: 'flex',
-            justifyContent: 'center',
-        }}>
-            <div>
-                <Title >
-                    Login
-                </Title>
-                <Form
-                    name="basic"
-                    onFinish={onFinish}
-                    autoComplete="off"
-                    style={{ margin: "20px" }}
-                >
-                    <Form.Item
-                        label="Username"
-                        name="username"
-                        rules={[{ required: true, message: 'Please input your username!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
+    return (
+        <Container>
 
-                    <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
+            <div style={{ flexFlow: 'row', justifyContent: 'center', justifyItems: 'center', width: '100vw', height: '100vh' }}>
+                <Header />
+                <div style={{
+                    width: '300px',
+                    margin: '0 auto',
+                    marginTop: '5rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}>
+                    <div>
+                        <Title >
+                            Login
+                        </Title>
+                        <Form
+                            name="basic"
+                            onFinish={onFinish}
+                            autoComplete="off"
+                            style={{ margin: "20px" }}
+                        >
+                            <Form.Item
+                                label="Username"
+                                name="username"
+                                rules={[{ required: true, message: 'Please input your username!' }]}
+                            >
+                                <Input />
+                            </Form.Item>
 
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            style={{ display: 'flex', margin: '0 auto', width: '100%', justifyContent: 'center' }} loading={isLoading}>
-                            Sign in
-                        </Button>
-                    </Form.Item>
-                </Form>
-                <div style={{ textAlign: 'center',padding:'2px' }}>
-                    <TextLink to="/register">
-                        Sign up
-                    </TextLink>
+                            <Form.Item
+                                label="Password"
+                                name="password"
+                                rules={[{ required: true, message: 'Please input your password!' }]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    style={{ display: 'flex', margin: '0 auto', width: '100%', justifyContent: 'center' }} loading={isLoading}>
+                                    Sign in
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                        <div style={{ textAlign: 'center', padding: '2px' }}>
+                            <TextLink to="/register">
+                                Sign up
+                            </TextLink>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-        </div>
-    </div>
+        </Container>
+    )
 };
 
 export default Login;

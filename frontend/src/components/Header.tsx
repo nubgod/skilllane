@@ -16,6 +16,7 @@ const HeaderBox = styled.div`
     box-shadow: 0 3px 6px 0 rgb(0 0 0 / 16%);
     background-color: #ffffff;
     height: 50px;
+    width: 100%;
 `
 const Logo = styled.img`
     object-fit: contain;
@@ -39,7 +40,7 @@ const Header = ({ editProfile }: IProps) => {
     const handleOnClickProfile = () => {
         history.push("/profile");
     }
-    
+
     const logout = async () => {
         try {
             await api.logout()
@@ -57,10 +58,10 @@ const Header = ({ editProfile }: IProps) => {
             {editProfile ?
                 <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }} >
                     <Logo onClick={gotoHomePage} src="https://account.skilllane.com/asset/skilllane-account-logo.png" />
-                    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" >
-                        <SubMenu key="SubMenu" icon={<UserOutlined />}>
-                                <Menu.Item onClick={handleOnClickProfile} key="setting:1">Edit Profile</Menu.Item>
-                                <Menu.Item onClick={logout} key="setting:2">Logout</Menu.Item>
+                    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal" style={{ flex: 1, justifyContent: 'end' }}>
+                        <SubMenu key="SubMenu" icon={<UserOutlined />} title="Profile">
+                            <Menu.Item onClick={handleOnClickProfile} key="setting:1">Edit Profile</Menu.Item>
+                            <Menu.Item onClick={logout} key="setting:2">Logout</Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>

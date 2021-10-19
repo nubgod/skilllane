@@ -15,7 +15,6 @@ const loadState = async () => {
     ReactDOM.render(<App authed={true}  />, root())
     return true
   }
-  // window.location.hash = 'login'
   ReactDOM.render(<LoginApp />, root())
 }
 

@@ -76,7 +76,7 @@ export class Controller {
     course.image = image
     course.startDate = startDate
     course.endDate = endDate
-    course.createdBy = ctx.state.username || 'nubtest'
+    course.createdBy = ctx.state.username
     await course.save()
     ctx.status = 201
     ctx.body = course.get()
